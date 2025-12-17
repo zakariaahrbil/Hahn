@@ -1,0 +1,34 @@
+version: "3.8"
+name: taski_stack
+
+services:
+  taski_db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: taski_db
+    restart: always
+    volumes:
+      - taski_db_data:/var/lib/postgresql
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8888:8080"
+    restart: always
+
+  frontend:
+    build: ./taski_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./taski_frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://host.docker.internal:8080
+
+volumes:
+  taski_db_data:
+    driver: local
