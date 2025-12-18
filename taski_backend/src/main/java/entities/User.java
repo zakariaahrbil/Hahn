@@ -30,11 +30,11 @@ public class User
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
