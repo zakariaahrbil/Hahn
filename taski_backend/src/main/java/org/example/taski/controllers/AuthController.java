@@ -1,0 +1,28 @@
+package org.example.taski.controllers;
+
+import org.example.taski.dtos.user.request.UserLoginRequest;
+import org.example.taski.dtos.user.response.UserLoginResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.example.taski.services.UserService;
+
+@RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
+public class AuthController
+{
+    private final UserService userService;
+
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest userLoginRequest)
+    {
+        String token = userService.login(userLoginRequest);
+        UserLoginResponse userLoginResponse= UserLoginResponse.builder().token(token).build();
+        return ResponseEntity.ok(userLoginResponse);
+    }
+}
