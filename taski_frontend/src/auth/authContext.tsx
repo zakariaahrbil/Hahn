@@ -1,4 +1,5 @@
 import { api } from "@/api/clients";
+import { Loading } from "@/components/loading";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -31,15 +32,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<userType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+
+  const getMe = async () => {
+    try {
+      const response = await api.get("/auth/me");
+        setUser(response.data);
+        setIsAuthenticated(true);
+    } catch (err) {
+      localStorage.removeItem("token");
+      setIsAuthenticated(false);
+      setUser(null);
+      navigate("/");
+    }
+    };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-    setUser(user ? JSON.parse(user) : null);
     if(token){
-        setIsAuthenticated(true)
+        getMe();
     }
+    setIsAuthLoading(false);
     }, []);
 
   const login = async (
@@ -55,7 +69,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         email:response.data.email
       });
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(user));
       navigate("/projects");
       return response.data;
     } catch (err: any) {
@@ -73,8 +86,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user, isLoading }}>
-      {children}
+    <AuthContext.Provider
+      value={{ isAuthenticated, login, logout, user, isLoading }}
+    >
+      {isAuthLoading ? <Loading/> : children}
     </AuthContext.Provider>
   );
 };

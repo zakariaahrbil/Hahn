@@ -17,5 +17,8 @@ public interface AuthMapper
     @Mapping(target = "email", source = "userLogin.email")
     UserLoginResponse toUserLoginResponse(UserLogin userLogin);
 
+    @Mapping(target = "id", source = "user.id")
+    @Mapping(target = "username", source = "user.username")
+    @Mapping(target = "email", source = "user.email")
     GetMeResponse toGetMeResponse(User user);
 }

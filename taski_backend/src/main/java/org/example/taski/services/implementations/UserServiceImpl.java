@@ -1,7 +1,6 @@
 package org.example.taski.services.implementations;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.example.taski.config.JwtUtil;
 import org.example.taski.dtos.user.request.UserLoginRequest;
 import org.example.taski.dtos.user.service.UserLogin;
@@ -10,6 +9,7 @@ import org.example.taski.exceptions.AuthException;
 import org.example.taski.exceptions.UserNotFoundException;
 import org.example.taski.repositories.UserRepo;
 import org.example.taski.services.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,7 +51,7 @@ public class UserServiceImpl
     @Override
     public User getMe(Authentication authentication)
     {
-        return userRepo.findByEmail(authentication.name())
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + authentication.name()));
+        return userRepo.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + authentication.getName()));
     }
 }
