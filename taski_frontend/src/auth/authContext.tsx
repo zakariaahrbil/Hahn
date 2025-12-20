@@ -35,7 +35,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    //TODO: check token validity
+    const user = localStorage.getItem("user");
+    setUser(user ? JSON.parse(user) : null);
     if(token){
         setIsAuthenticated(true)
     }
@@ -54,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         email:response.data.email
       });
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(user));
       navigate("/projects");
       return response.data;
     } catch (err: any) {
