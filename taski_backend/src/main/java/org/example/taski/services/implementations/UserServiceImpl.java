@@ -1,16 +1,17 @@
 package org.example.taski.services.implementations;
 
+import lombok.RequiredArgsConstructor;
 import org.example.taski.config.JwtUtil;
 import org.example.taski.dtos.user.request.UserLoginRequest;
+import org.example.taski.dtos.user.service.UserLogin;
 import org.example.taski.exceptions.AuthException;
 import org.example.taski.exceptions.UserNotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.example.taski.repositories.UserRepo;
+import org.example.taski.services.UserService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.example.taski.repositories.UserRepo;
-import org.example.taski.services.UserService;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class UserServiceImpl
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public String login(UserLoginRequest userLoginRequest)
+    public UserLogin login(UserLoginRequest userLoginRequest)
     {
         var user = userRepo.findByEmail(userLoginRequest.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + userLoginRequest.getEmail()));
@@ -39,6 +40,9 @@ public class UserServiceImpl
                 user.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER"))
         );
-        return jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.generateToken(userDetails);
+
+        return UserLogin.builder().id(user.getId()).email(user.getEmail()).username(user.getUsername())
+                .token(token).build();
     }
 }
