@@ -1,11 +1,19 @@
-import { Button } from "./components/ui/button"
+import { Route, Routes } from "react-router-dom"
+import Home from "./routes/home"
+import { Login } from "./routes/login"
+import { Projects } from "./routes/projects"
+import { AuthProvider } from "./auth/authContext"
 
 export function App() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="font-medium">Hello World</div>
-      <Button className="ml-4">Click Me</Button>
-    </div>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/projects" element={<Projects/>} />
+        <Route path="/tasks" element={<button>tasks</button>} />
+      </Routes>
+    </AuthProvider>
   )
 }
 
