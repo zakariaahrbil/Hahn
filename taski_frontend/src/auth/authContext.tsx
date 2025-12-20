@@ -1,6 +1,12 @@
 import { api } from "@/api/clients";
 import { Loading } from "@/components/loading";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { useNavigate } from "react-router-dom";
 
 export type loginResponseType = {
@@ -38,23 +44,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const getMe = async () => {
     try {
       const response = await api.get("/auth/me");
-        setUser(response.data);
-        setIsAuthenticated(true);
+      setUser(response.data);
+      setIsAuthenticated(true);
     } catch (err) {
       localStorage.removeItem("token");
       setIsAuthenticated(false);
       setUser(null);
       navigate("/");
+    } finally {
+      setIsAuthLoading(false);
     }
-    };
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if(token){
-        getMe();
+    if (token) {
+      getMe();
+    } else {
+      setIsAuthLoading(false);
     }
-    setIsAuthLoading(false);
-    }, []);
+  }, []);
 
   const login = async (
     loginPayload: loginPayloadType
@@ -64,17 +73,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await api.post("/auth/login", loginPayload);
       setIsAuthenticated(true);
       setUser({
-        id:response.data.id,
-        username:response.data.username,
-        email:response.data.email
+        id: response.data.id,
+        username: response.data.username,
+        email: response.data.email,
       });
       localStorage.setItem("token", response.data.token);
       navigate("/projects");
       return response.data;
     } catch (err: any) {
       throw new Error(err.response?.data?.message || "Login failed");
-    }finally {
-        setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -83,22 +92,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     localStorage.removeItem("token");
     navigate("/login");
-  }
+  };
 
   return (
     <AuthContext.Provider
       value={{ isAuthenticated, login, logout, user, isLoading }}
     >
-      {isAuthLoading ? <Loading/> : children}
+      {isAuthLoading ? <Loading /> : children}
     </AuthContext.Provider>
   );
 };
 
-
-export const useAuth= ()=>{
-    const context = useContext(AuthContext);
-    if (context === undefined) {
-        throw new Error("useAuth must be used within an AuthProvider");
-    }
-    return context;
-}
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
