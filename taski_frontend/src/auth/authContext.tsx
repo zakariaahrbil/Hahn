@@ -46,13 +46,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   ): Promise<loginResponseType> => {
     try {
       setIsLoading(true);
-      console.log("Logging in with", loginPayload);
       const response = await api.post("/auth/login", loginPayload);
       setIsAuthenticated(true);
       setUser({
-        id:response.data.user?.id,
-        username:response.data.user?.username,
-        email:response.data.user?.email
+        id:response.data.id,
+        username:response.data.username,
+        email:response.data.email
       });
       localStorage.setItem("token", response.data.token);
       navigate("/projects");
