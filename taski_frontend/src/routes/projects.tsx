@@ -1,14 +1,20 @@
-import { getAllProjects, type paginatedProjects } from "@/api/projects";
+import {
+  getAllProjects,
+  type paginatedProjects,
+  deleteProject,
+} from "@/api/projects";
 import { useAuth } from "@/auth/authContext";
+import { ConfirmDeleteModal } from "@/components/project/confirmDeleteModal";
 import { CreateProject } from "@/components/project/createProject";
 import { GradientContainer } from "@/components/gradientContainer";
 import { LastProject } from "@/components/project/lastProject";
 import { ProjectCard } from "@/components/project/projectCard";
 import { Search } from "@/components/project/search";
 import { TotalProjects } from "@/components/project/totalProjects";
-import { LogOut } from "lucide-react";
+import { LogOut, CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 export const Projects = () => {
   const [page, setPage] = useState(0);
@@ -18,13 +24,77 @@ export const Projects = () => {
     currentPage: 0,
     totalPages: 0,
   });
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    projectId: number | null;
+    projectTitle: string;
+  }>({
+    isOpen: false,
+    projectId: null,
+    projectTitle: "",
+  });
+
+  const handleAsyncAction = async (
+    action: () => Promise<void>,
+    successMessage: string,
+    errorMessage: string
+  ) => {
+    try {
+      await action();
+      loadProjects();
+      toast(successMessage, {
+        duration: 4000,
+        position: "top-center",
+        style: {
+          background: "#9c35fd",
+          color: "white",
+          borderRadius: "8px",
+          border: "none",
+          fontSize: "16px",
+        },
+        icon: <CheckCircle className="w-5 h-5" />,
+      });
+    } catch (err) {
+      toast(errorMessage, {
+        duration: 4000,
+        position: "top-center",
+        style: {
+          background: "red",
+          color: "white",
+          borderRadius: "8px",
+          border: "none",
+          fontSize: "16px",
+        },
+      });
+    }
+  };
+
   const loadProjects = async () => {
     try {
       const response = await getAllProjects(page);
       setPaginatedData(response);
     } catch (err) {
-      console.log(err);
+      toast.error("Failed to load projects");
     }
+  };
+
+  const handleDeleteProject = (id: number, title: string) => {
+    setDeleteModal({
+      isOpen: true,
+      projectId: id,
+      projectTitle: title,
+    });
+  };
+
+  const confirmDelete = async () => {
+    if (deleteModal.projectId) {
+      await handleAsyncAction(
+        () => deleteProject(deleteModal.projectId!),
+        "Project deleted successfully.",
+        "Failed to delete project."
+      );
+    }
+    setDeleteModal({ isOpen: false, projectId: null, projectTitle: "" });
   };
 
   useEffect(() => {
@@ -56,7 +126,11 @@ export const Projects = () => {
         <Search />
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 ">
           {paginatedData.projects.map((project) => (
-            <ProjectCard key={project.id} {...project} />
+            <ProjectCard
+              key={project.id}
+              {...project}
+              onDelete={handleDeleteProject}
+            />
           ))}
         </section>
         <div className="flex justify-center items-center gap-4 mt-6 mb-12">
@@ -79,6 +153,14 @@ export const Projects = () => {
           </button>
         </div>
       </div>
+      <ConfirmDeleteModal
+        isOpen={deleteModal.isOpen}
+        onClose={() =>
+          setDeleteModal({ isOpen: false, projectId: null, projectTitle: "" })
+        }
+        title={deleteModal.projectTitle}
+        onConfirm={confirmDelete}
+      />
     </GradientContainer>
   );
 };

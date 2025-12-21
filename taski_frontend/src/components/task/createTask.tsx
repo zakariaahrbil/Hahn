@@ -1,4 +1,4 @@
-import { CreateTaskDrawer } from "../createTaskDrawer";
+import { CreateTaskDrawer } from "./createTaskDrawer";
 
 export const CreateTask = ({
   loadTasks,

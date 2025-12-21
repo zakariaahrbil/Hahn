@@ -6,6 +6,7 @@ import { AuthProvider } from "./auth/authContext";
 import { ProtectedRoute } from "./auth/protectedRoute";
 import { Toaster } from "sonner";
 import { Tasks } from "./routes/tasks";
+import NotFound from "./routes/notFound";
 
 export function App() {
   return (
@@ -30,6 +31,7 @@ export function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </AuthProvider>
   );

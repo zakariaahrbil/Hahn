@@ -34,8 +34,6 @@ export const CreateTaskDrawer = ({
 
   const onSubmit = async (data: createTaskType) => {
     setIsSubmitting(true);
-    // Simulate lag
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     try {
       const taskData = { ...data, deadline: data.deadline + "T00:00:00" };
       await createTask(projectId, taskData);
@@ -83,7 +81,7 @@ export const CreateTaskDrawer = ({
             <LayersPlusIcon className="w-12 h-12 text-white" />
           </div>
         </DrawerTrigger>
-        <DrawerContent className="bg-linear-to-tl to-[#9c35fd] via-[#29004f] from-[#10001f]  text-white min-h-100 rounded-t-2xl shadow-2xl w-screen">
+        <DrawerContent className="bg-linear-to-tl to-[#9c35fd] via-[#29004f] from-[#10001f]  text-white min-h-100 rounded-t-2xl shadow-2xl border-none w-screen">
           <DrawerHeader>
             <DrawerTitle className="text-4xl">Create New Task</DrawerTitle>
             <DrawerDescription>

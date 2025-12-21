@@ -64,7 +64,7 @@ export const CreateProjectDrawer = ({
           <LayersPlusIcon className="w-12 h-12 text-white" />
         </div>
       </DrawerTrigger>
-      <DrawerContent className="bg-linear-to-tl to-[#9c35fd] via-[#29004f] from-[#10001f]  text-white min-h-100 rounded-t-2xl shadow-2xl w-screen">
+      <DrawerContent className="bg-linear-to-tl to-[#9c35fd] via-[#29004f] from-[#10001f]  text-white min-h-100 rounded-t-2xl shadow-2xl border-none w-screen">
         <DrawerHeader>
           <DrawerTitle className="text-4xl">Create New Project</DrawerTitle>
           <DrawerDescription>
