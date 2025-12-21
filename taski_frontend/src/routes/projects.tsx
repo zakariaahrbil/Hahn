@@ -36,6 +36,7 @@ export const Projects = () => {
   });
   const [sortBy, setSortBy] = useState<string>("createdAt");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const projectSortOptions = [
     { value: "createdAt", label: "Date Created" },
@@ -79,7 +80,12 @@ export const Projects = () => {
 
   const loadProjects = async () => {
     try {
-      const response = await getAllProjects(page, sortBy, sortDirection);
+      const response = await getAllProjects(
+        page,
+        sortBy,
+        sortDirection,
+        searchQuery
+      );
       setPaginatedData(response);
     } catch (err) {
       toast.error("Failed to load projects");
@@ -114,9 +120,14 @@ export const Projects = () => {
     setPage(0);
   };
 
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setPage(0); // Reset to first page when search changes
+  };
+
   useEffect(() => {
     loadProjects();
-  }, [page, sortBy, sortDirection]);
+  }, [page, sortBy, sortDirection, searchQuery]);
 
   return (
     <GradientContainer>
@@ -141,7 +152,10 @@ export const Projects = () => {
           <CreateProject loadProjects={loadProjects} />
         </div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4 w-full">
-          <ProjectSearch />
+          <ProjectSearch
+            searchQuery={searchQuery}
+            onSearchChange={handleSearchChange}
+          />
           <SortControls
             sortBy={sortBy}
             sortDirection={sortDirection}

@@ -13,7 +13,7 @@ export type taskList = taskType[];
 export type createTaskType = {
   title: string;
   description: string;
-  deadline: string; 
+  deadline: string;
 };
 
 export type paginatedTasks = {
@@ -29,15 +29,25 @@ export const getAllTasks = async (
   projectId: number,
   page: number,
   sort?: string,
-  sortDir?: "asc" | "desc"
+  sortDir?: "asc" | "desc",
+  search?: string
 ): Promise<paginatedTasks> => {
   page = page ? page : 0;
   try {
-    const response = await api.get(
-      `${TASKS_API(projectId)}?page=${page}&size=9&sort=${sort || "created_at"},${
-        sortDir || "desc"
-      }`
-    );
+    let url: string;
+    if (search) {
+      if(sort === "created_at") {
+        sort = "createdAt";
+      }
+      url = `${TASKS_API(projectId)}/search?query=${encodeURIComponent(
+        search
+      )}&page=${page}&size=9&sort=${sort || "createdAt"},${sortDir || "desc"}`;
+    } else {
+      url = `${TASKS_API(projectId)}?page=${page}&size=9&sort=${
+        sort || "created_at"
+      },${sortDir || "desc"}`;
+    }
+    const response = await api.get(url);
     const data = response.data;
     return {
       tasks: data.content,

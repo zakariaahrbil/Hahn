@@ -40,6 +40,7 @@ export const Tasks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sortBy, setSortBy] = useState<string>("created_at");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const taskSortOptions = [
     { value: "created_at", label: "Date Created" },
@@ -52,7 +53,8 @@ export const Tasks = () => {
         projectId,
         page,
         sortBy,
-        sortDirection
+        sortDirection,
+        searchQuery
       );
       setPaginatedData(response);
     } catch (err) {
@@ -143,6 +145,11 @@ export const Tasks = () => {
     setPage(0);
   };
 
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setPage(0); 
+  };
+
   useEffect(() => {
     setIsLoading(true);
     loadProgress();
@@ -151,7 +158,7 @@ export const Tasks = () => {
 
   useEffect(() => {
     loadTasks();
-  }, [page, sortBy, sortDirection]);
+  }, [page, sortBy, sortDirection, searchQuery]);
 
   if (isLoading) {
     return <Loading />;
@@ -191,7 +198,10 @@ export const Tasks = () => {
           <div className="flex flex-col md:flex-row max-sm:flex-col-reverse md:gap-8 gap-2 mt-8">
             <div className="flex-1">
               <div className="flex flex-col md:flex-row flex-wrap md:items-center md:justify-between gap-4 w-full">
-                <TaskSearch />
+                <TaskSearch
+                  searchQuery={searchQuery}
+                  onSearchChange={handleSearchChange}
+                />
                 <div className="md:w-auto">
                   <SortControls
                     sortBy={sortBy}

@@ -37,15 +37,24 @@ const PROJECTS_API = "/projects";
 export const getAllProjects = async (
   page: number,
   sort?: string,
-  sortDir?: "asc" | "desc"
+  sortDir?: "asc" | "desc",
+  search?: string
 ): Promise<paginatedProjects> => {
   page = page ? page : 0;
   try {
-    const response = await api.get(
-      `${PROJECTS_API}?page=${page}&size=9&sort=${sort || "createdAt"},${
+    let url: string;
+    if (search) {
+      // Use search endpoint
+      url = `${PROJECTS_API}/search?query=${encodeURIComponent(
+        search
+      )}&page=${page}&size=9&sort=${sort || "createdAt"},${sortDir || "desc"}`;
+    } else {
+      // Use regular endpoint
+      url = `${PROJECTS_API}?page=${page}&size=9&sort=${sort || "createdAt"},${
         sortDir || "desc"
-      }`
-    );
+      }`;
+    }
+    const response = await api.get(url);
     const data = response.data;
     return {
       projects: data.content,
