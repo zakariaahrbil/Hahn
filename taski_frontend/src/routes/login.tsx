@@ -2,8 +2,9 @@ import { useAuth } from "@/auth/authContext";
 import { GradientContainer } from "@/components/gradientContainer";
 import { Spinner } from "@/components/ui/spinner";
 import { EyeClosedIcon, EyeIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type loginFormDataType = {
   email: string;
@@ -19,8 +20,20 @@ export const Login = () => {
     formState: { errors },
     setError,
   } = useForm<loginFormDataType>();
+  const { isAuthenticated } = useAuth();
+  const router = useNavigate();
+
+  useEffect(() => {
+    console.log(isAuthenticated);
+    if (isAuthenticated) {
+      router("/projects");
+    }
+  }, []);
+
+
 
   const onSubmit = async (data: loginFormDataType) => {
+    
     try {
       await login({
         email: data.email,
@@ -41,7 +54,7 @@ export const Login = () => {
         </h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-6 mt-10 w-full max-w-md bg-white/9 backdrop-blur-lg  text-white font-light px-8 py-10  rounded-2xl shadow-xl"
+          className="flex flex-col gap-6 mt-10 w-full max-w-md bg-white/9 text-white font-light px-8 py-10  rounded-2xl shadow-xl"
         >
           <div className="flex flex-col">
             <label className="font-medium mb-2">Email</label>
@@ -54,11 +67,11 @@ export const Login = () => {
                 },
               })}
               placeholder="m@example.com"
-              className={`px-4 py-2 rounded-lg focus:outline-none border  ${
+              className={`px-4 py-2 rounded-lg focus:outline-none border ${
                 errors.email || errors.root
                   ? "border-red-400"
                   : "border-white/50 focus:border-white"
-              } `}
+              } bg-white/10 text-white `}
             />
             {errors.email && (
               <p className="text-red-400 mt-1">{errors.email.message}</p>
@@ -93,7 +106,7 @@ export const Login = () => {
                 errors.password || errors.root
                   ? "border-red-400"
                   : "border-white/50 focus:border-white"
-              } `}
+              } bg-white/10 text-white`}
             />
             {errors.password && (
               <p className="text-red-400 mt-1">{errors.password.message}</p>
@@ -106,9 +119,16 @@ export const Login = () => {
             type="submit"
             disabled={isLoading}
             className={`flex justify-center items-center gap-2 bg-white text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 cursor-pointer 
-                disabled:cursor-not-allowed disabled:bg-white/70`}
+                 disabled:bg-white/70`}
           >
-            {isLoading ? <><Spinner className="size-4"/>Login</> : "Login"}
+            {isLoading ? (
+              <>
+                <Spinner className="size-4" />
+                Login
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
       </div>

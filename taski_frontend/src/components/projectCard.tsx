@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export const ProjectCard = ({ id, title }: listProjectType) => {
   return (
-    <div className="bg-white/9 backdrop-blur-lg border border-white/50 rounded-2xl p-4 shadow-xl  hover:bg-white/20 transition">
+    <div className="bg-white/9 border border-white/50 rounded-2xl p-4 shadow-xl">
       <div className="flex gap-2 mb-4">
         <div className="bg-white/50 rounded-xl p-2 flex justify-center items-center w-fit">
           <FolderDot className="w-8 h-8 text-purple-950" />

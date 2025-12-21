@@ -43,3 +43,13 @@ export const getAllProjects = async (
     throw err;
   }
 };
+
+export const createProject = async (
+  project: createProjectType
+): Promise<void> => {
+  try {
+    await api.post(PROJECTS_API, project);
+  } catch (err) {
+    throw err;
+  }
+};

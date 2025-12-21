@@ -4,10 +4,12 @@ import { Login } from "./routes/login";
 import { Projects } from "./routes/projects";
 import { AuthProvider } from "./auth/authContext";
 import { ProtectedRoute } from "./auth/protectedRoute";
+import { Toaster } from "sonner";
 
 export function App() {
   return (
     <AuthProvider>
+      <Toaster/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
