@@ -31,10 +31,10 @@ public class UserServiceImpl
     public UserLogin login(UserLoginRequest userLoginRequest)
     {
         var user = userRepo.findByEmail(userLoginRequest.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + userLoginRequest.getEmail()));
+                .orElseThrow(() -> new AuthException("Invalid credentials"+userLoginRequest.getEmail()));
 
         if (!passwordEncoder.matches(userLoginRequest.getPassword(), user.getPassword())) {
-            throw new AuthException("Email or password is incorrect");
+            throw new AuthException("Invalid credentials"+userLoginRequest.getEmail());
         }
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
@@ -52,6 +52,6 @@ public class UserServiceImpl
     public User getMe(Authentication authentication)
     {
         return userRepo.findByEmail(authentication.getName())
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + authentication.getName()));
+                .orElseThrow(() -> new UserNotFoundException("User not found"+authentication.getName()));
     }
 }
