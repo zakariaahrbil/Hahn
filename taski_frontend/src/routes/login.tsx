@@ -35,7 +35,7 @@ export const Login = () => {
 
   return (
     <GradientContainer>
-      <div className="max-w-100 flex flex-col items-center justify-center w-full h-full mx-auto ">
+      <div className="max-w-100 flex flex-col items-center justify-center m-auto">
         <h1 className="text-5xl font-normal text-center  leading-14">
           Login to your <span className=" italic font-bold">Taski</span> space
         </h1>

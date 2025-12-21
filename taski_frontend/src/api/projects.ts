@@ -19,14 +19,26 @@ export type createProjectType = {
   description: string;
 };
 
+export type paginatedProjects = {
+  projects: projectList;
+  currentPage: number;
+  totalPages: number;
+};
+
 const PROJECTS_API = "/projects";
 
-export const getAllProjects = async (page: number): Promise<projectList> => {
-  page = page ? page:0;
+export const getAllProjects = async (
+  page: number
+): Promise<paginatedProjects> => {
+  page = page ? page : 0;
   try {
-    const response = api.get(`${PROJECTS_API}?page=${page}&size=10`);
-    const data = (await response).data;
-    return data.content;
+    const response = await api.get(`${PROJECTS_API}?page=${page}&size=9`);
+    const data = response.data;
+    return {
+      projects: data.content,
+      currentPage: data.pageable.pageNumber,
+      totalPages: data.totalPages,
+    };
   } catch (err) {
     throw err;
   }

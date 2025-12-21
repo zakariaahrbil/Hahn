@@ -1,7 +1,8 @@
-import { getAllProjects, type projectList } from "@/api/projects";
+import { getAllProjects, type paginatedProjects } from "@/api/projects";
 import { useAuth } from "@/auth/authContext";
 import { GradientContainer } from "@/components/gradientContainer";
 import { LastProject } from "@/components/lastProject";
+import { ProjectCard } from "@/components/projectCard";
 import { Search } from "@/components/search";
 import { LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -10,11 +11,15 @@ import { Link } from "react-router-dom";
 export const Projects = () => {
   const [page, setPage] = useState(0);
   const { logout } = useAuth();
-  const [projects, setProjects] = useState<projectList>([]);
+  const [paginatedData, setPaginatedData] = useState<paginatedProjects>({
+    projects: [],
+    currentPage: 0,
+    totalPages: 0,
+  });
   const loadProjects = async () => {
     try {
       const response = await getAllProjects(page);
-      setProjects(response);
+      setPaginatedData(response);
     } catch (err) {
       console.log(err);
     }
@@ -26,7 +31,7 @@ export const Projects = () => {
 
   return (
     <GradientContainer>
-      <div className="max-w-300 flex flex-col w-full h-full mx-auto pt-8">
+      <div className="max-w-300 flex flex-col w-full h-full mx-auto pt-8 ">
         <div className="flex justify-between gap-4 md:items-start items-center">
           <h1 className=" md:text-4xl text-2xl  max-w-100 text-left font-normal  lg:leading-10">
             Welcome to your <span className=" italic font-bold">Projects</span>{" "}
@@ -43,16 +48,30 @@ export const Projects = () => {
         </div>
         <LastProject />
         <Search />
-        <section className="flex gap-2 mt-6">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className="bg-white/9 text-white p-6 rounded-lg shadow-xl flex-1"
-            >
-              <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-            </div>
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 ">
+          {paginatedData.projects.map((project) => (
+            <ProjectCard key={project.id} {...project} />
           ))}
         </section>
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <button
+            onClick={() => setPage((prev) => Math.max(0, prev - 1))}
+            disabled={paginatedData.currentPage === 0}
+            className="bg-white text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 disabled:bg-white/50 cursor-pointer disabled:cursor-auto"
+          >
+            Previous
+          </button>
+          <span className="text-white">
+            Page {paginatedData.currentPage + 1} of {paginatedData.totalPages}
+          </span>
+          <button
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={paginatedData.currentPage >= paginatedData.totalPages - 1}
+            className="bg-white text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 disabled:bg-white/50 cursor-pointer disabled:cursor-auto"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </GradientContainer>
   );
