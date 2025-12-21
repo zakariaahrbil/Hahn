@@ -1,5 +1,5 @@
 import { LucideView } from "lucide-react";
-import { CustomLink } from "./customLink";
+import { CustomLink } from "../customLink";
 
 export const LastProject = () => {
   return (

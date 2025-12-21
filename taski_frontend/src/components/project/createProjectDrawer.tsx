@@ -8,13 +8,13 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "./ui/drawer";
+} from "../ui/drawer";
 import { LayersPlusIcon } from "lucide-react";
 import { CheckCircle } from "lucide-react";
 import { createProject, type createProjectType } from "@/api/projects";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Spinner } from "./ui/spinner";
+import { Spinner } from "../ui/spinner";
 
 export const CreateProjectDrawer = ({
   loadProjects,

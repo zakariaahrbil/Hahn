@@ -1,4 +1,3 @@
-import React from "react";
 
 export const TotalTasks = ({ total }: { total: number }) => {
   return (

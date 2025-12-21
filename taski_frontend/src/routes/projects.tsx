@@ -1,11 +1,11 @@
 import { getAllProjects, type paginatedProjects } from "@/api/projects";
 import { useAuth } from "@/auth/authContext";
-import { CreateProject } from "@/components/createProject";
+import { CreateProject } from "@/components/project/createProject";
 import { GradientContainer } from "@/components/gradientContainer";
-import { LastProject } from "@/components/lastProject";
-import { ProjectCard } from "@/components/projectCard";
-import { Search } from "@/components/search";
-import { TotalProjects } from "@/components/totalProjects";
+import { LastProject } from "@/components/project/lastProject";
+import { ProjectCard } from "@/components/project/projectCard";
+import { Search } from "@/components/project/search";
+import { TotalProjects } from "@/components/project/totalProjects";
 import { LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";

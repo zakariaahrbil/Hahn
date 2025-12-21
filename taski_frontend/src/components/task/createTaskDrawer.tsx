@@ -11,10 +11,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "./ui/drawer";
+} from "../ui/drawer";
 import { createTask, type createTaskType } from "@/api/tasks";
 import { LayersPlusIcon } from "lucide-react";
-import { Spinner } from "./ui/spinner";
+import { Spinner } from "../ui/spinner";
 
 export const CreateTaskDrawer = ({
   loadTasks,

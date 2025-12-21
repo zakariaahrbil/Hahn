@@ -3,10 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { LogOut, ArrowLeft, CheckCircle } from "lucide-react";
 import { GradientContainer } from "@/components/gradientContainer";
-import { CreateTask } from "@/components/createTask";
-import { TaskSearch } from "@/components/taskSearch";
-import { TotalTasks } from "@/components/totalTasks";
-import { TaskCard } from "@/components/taskCard";
+import { CreateTask } from "@/components/task/createTask";
+import { TaskSearch } from "@/components/task/taskSearch";
+import { TotalTasks } from "@/components/task/totalTasks";
+import { TaskCard } from "@/components/task/taskCard";
 import { useAuth } from "@/auth/authContext";
 import {
   getAllTasks,
