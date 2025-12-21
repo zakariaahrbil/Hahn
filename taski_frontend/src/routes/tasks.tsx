@@ -5,6 +5,7 @@ import { LogOut, ArrowLeft, CheckCircle, FolderArchive } from "lucide-react";
 import { GradientContainer } from "@/components/gradientContainer";
 import { CreateTask } from "@/components/task/createTask";
 import { TaskSearch } from "@/components/task/taskSearch";
+import { SortControls } from "@/components/sortControls";
 import { TaskCard } from "@/components/task/taskCard";
 import { ProjectProgress } from "@/components/project/projectProgress";
 import { useAuth } from "@/auth/authContext";
@@ -37,9 +38,22 @@ export const Tasks = () => {
     totalElements: 0,
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState<string>("created_at");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+
+  const taskSortOptions = [
+    { value: "created_at", label: "Date Created" },
+    { value: "title", label: "Title" },
+    { value: "deadline", label: "Deadline" },
+  ];
   const loadTasks = async () => {
     try {
-      const response = await getAllTasks(projectId, page);
+      const response = await getAllTasks(
+        projectId,
+        page,
+        sortBy,
+        sortDirection
+      );
       setPaginatedData(response);
     } catch (err) {
       toast.error("Failed to load tasks");
@@ -120,6 +134,15 @@ export const Tasks = () => {
     }
   };
 
+  const handleSortChange = (
+    newSortBy: string,
+    newSortDirection: "asc" | "desc"
+  ) => {
+    setSortBy(newSortBy);
+    setSortDirection(newSortDirection);
+    setPage(0);
+  };
+
   useEffect(() => {
     setIsLoading(true);
     loadProgress();
@@ -128,7 +151,7 @@ export const Tasks = () => {
 
   useEffect(() => {
     loadTasks();
-  }, [page]);
+  }, [page, sortBy, sortDirection]);
 
   if (isLoading) {
     return <Loading />;
@@ -165,9 +188,19 @@ export const Tasks = () => {
               Logout
             </Link>
           </div>
-          <div className="flex flex-col md:flex-row gap-8 mt-8">
+          <div className="flex flex-col md:flex-row max-sm:flex-col-reverse md:gap-8 gap-2 mt-8">
             <div className="flex-1">
-              <TaskSearch />
+              <div className="flex flex-col md:flex-row flex-wrap md:items-center md:justify-between gap-4 w-full">
+                <TaskSearch />
+                <div className="md:w-auto">
+                  <SortControls
+                    sortBy={sortBy}
+                    sortDirection={sortDirection}
+                    onSortChange={handleSortChange}
+                    sortOptions={taskSortOptions}
+                  />
+                </div>
+              </div>
               <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 ">
                 {paginatedData.tasks.length === 0 ? (
                   <div className="col-span-full text-center text-white py-12">

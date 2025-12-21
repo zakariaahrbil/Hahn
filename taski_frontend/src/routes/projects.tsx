@@ -9,7 +9,8 @@ import { CreateProject } from "@/components/project/createProject";
 import { GradientContainer } from "@/components/gradientContainer";
 import { LastProject } from "@/components/project/lastProject";
 import { ProjectCard } from "@/components/project/projectCard";
-import { Search } from "@/components/project/search";
+import { ProjectSearch } from "@/components/project/projectSearch";
+import { SortControls } from "@/components/sortControls";
 import { TotalProjects } from "@/components/project/totalProjects";
 import { LogOut, CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -33,6 +34,13 @@ export const Projects = () => {
     projectId: null,
     projectTitle: "",
   });
+  const [sortBy, setSortBy] = useState<string>("createdAt");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+
+  const projectSortOptions = [
+    { value: "createdAt", label: "Date Created" },
+    { value: "title", label: "Title" },
+  ];
 
   const handleAsyncAction = async (
     action: () => Promise<void>,
@@ -71,7 +79,7 @@ export const Projects = () => {
 
   const loadProjects = async () => {
     try {
-      const response = await getAllProjects(page);
+      const response = await getAllProjects(page, sortBy, sortDirection);
       setPaginatedData(response);
     } catch (err) {
       toast.error("Failed to load projects");
@@ -97,9 +105,18 @@ export const Projects = () => {
     setDeleteModal({ isOpen: false, projectId: null, projectTitle: "" });
   };
 
+  const handleSortChange = (
+    newSortBy: string,
+    newSortDirection: "asc" | "desc"
+  ) => {
+    setSortBy(newSortBy);
+    setSortDirection(newSortDirection);
+    setPage(0);
+  };
+
   useEffect(() => {
     loadProjects();
-  }, [page]);
+  }, [page, sortBy, sortDirection]);
 
   return (
     <GradientContainer>
@@ -123,7 +140,15 @@ export const Projects = () => {
           <TotalProjects />
           <CreateProject loadProjects={loadProjects} />
         </div>
-        <Search />
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4 w-full">
+          <ProjectSearch />
+          <SortControls
+            sortBy={sortBy}
+            sortDirection={sortDirection}
+            onSortChange={handleSortChange}
+            sortOptions={projectSortOptions}
+          />
+        </div>
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 ">
           {paginatedData.projects.map((project) => (
             <ProjectCard

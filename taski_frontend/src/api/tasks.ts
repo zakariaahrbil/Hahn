@@ -27,12 +27,16 @@ const TASKS_API = (projectId: number) => `/projects/${projectId}/tasks`;
 
 export const getAllTasks = async (
   projectId: number,
-  page: number
+  page: number,
+  sort?: string,
+  sortDir?: "asc" | "desc"
 ): Promise<paginatedTasks> => {
   page = page ? page : 0;
   try {
     const response = await api.get(
-      `${TASKS_API(projectId)}?page=${page}&size=9`
+      `${TASKS_API(projectId)}?page=${page}&size=9&sort=${sort || "created_at"},${
+        sortDir || "desc"
+      }`
     );
     const data = response.data;
     return {

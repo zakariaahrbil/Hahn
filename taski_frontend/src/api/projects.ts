@@ -35,11 +35,17 @@ export type paginatedProjects = {
 const PROJECTS_API = "/projects";
 
 export const getAllProjects = async (
-  page: number
+  page: number,
+  sort?: string,
+  sortDir?: "asc" | "desc"
 ): Promise<paginatedProjects> => {
   page = page ? page : 0;
   try {
-    const response = await api.get(`${PROJECTS_API}?page=${page}&size=9`);
+    const response = await api.get(
+      `${PROJECTS_API}?page=${page}&size=9&sort=${sort || "createdAt"},${
+        sortDir || "desc"
+      }`
+    );
     const data = response.data;
     return {
       projects: data.content,
@@ -86,5 +92,5 @@ export const deleteProject = async (id: number): Promise<void> => {
     await api.delete(`${PROJECTS_API}/${id}`);
   } catch (err) {
     throw err;
-  } 
+  }
 };
