@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.example.taski.services.ProjectService;
 import org.example.taski.utils.UserIdFromUserDetails;
@@ -67,5 +68,15 @@ public class ProjectsController
         );
 
         return new ResponseEntity<>(getProjectResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<GetAllProjectsResponse>> searchProjects(@RequestParam("query") String query, Authentication authentication, Pageable pageable)
+    {
+
+        Page<GetAllProjectsResponse> searchResults = projectService.searchProjects(query, userIdFromUserDetails.getUserId(authentication), pageable)
+                .map(projectMapper::toGetAllProjectsResponse);
+
+        return new ResponseEntity<>(searchResults, HttpStatus.OK);
     }
 }

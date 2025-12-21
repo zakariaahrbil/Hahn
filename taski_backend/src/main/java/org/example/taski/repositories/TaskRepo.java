@@ -36,4 +36,7 @@ public interface TaskRepo
               AND EXISTS (SELECT 1 FROM projects p WHERE p.id = :projectId AND p.user_id = :userId)
             """, nativeQuery = true)
     Page<Task> findAllByProjectIdAndUserId(@Param("projectId") Long projectId, @Param("userId") Long userId, Pageable pageable);
+
+    @Query("SELECT t FROM Task t WHERE t.project.id = :projectId AND t.project.user.id = :userId AND (t.title LIKE %:query% OR t.description LIKE %:query%)")
+    Page<Task> searchByTitleOrDescriptionAndUserId(@Param("query") String query,@Param("projectId") Long projectId , @Param("userId") Long userId, Pageable pageable);
 }

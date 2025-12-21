@@ -56,5 +56,9 @@ public class ProjectServiceImpl
                 .orElseThrow(()-> new ProjectException("Project not found"));
     }
 
-
+    @Override
+    public Page<Project> searchProjects(String query, Long userId, Pageable pageable)
+    {
+        return projectRepo.searchByTitleOrDescriptionAndUserId(query, userId, pageable);
+    }
 }

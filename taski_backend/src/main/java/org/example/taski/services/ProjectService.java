@@ -15,4 +15,5 @@ public interface ProjectService
 
     Project getProjectById(Long projectId, Long userId);
 
+    Page<Project> searchProjects(String query, Long userId, Pageable pageable);
 }

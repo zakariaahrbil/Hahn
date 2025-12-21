@@ -78,4 +78,10 @@ public class TaskServiceImpl
     {
         return taskRepo.findAllByProjectIdAndUserId(projectId, userId, pageable);
     }
+
+    @Override
+    public Page<Task> searchTasks(Long projectId, Long userId, String query, Pageable pageable)
+    {
+        return taskRepo.searchByTitleOrDescriptionAndUserId(query, projectId, userId, pageable);
+    }
 }

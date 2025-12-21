@@ -1,6 +1,7 @@
 package org.example.taski.services;
 
 import org.example.taski.dtos.task.request.CreateTaskRequest;
+import org.example.taski.entities.Project;
 import org.example.taski.entities.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,5 +15,8 @@ public interface TaskService
     void deleteTask(Long projectId, Long taskId, Long userId);
 
     Page<Task> getTasksByProjectId(Long projectId, Long userId, Pageable pageable);
+
+    Page<Task> searchTasks(Long projectId, Long userId, String query, Pageable pageable);
+
 
 }
