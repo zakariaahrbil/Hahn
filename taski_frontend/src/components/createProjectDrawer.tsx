@@ -14,6 +14,7 @@ import { CheckCircle } from "lucide-react";
 import { createProject, type createProjectType } from "@/api/projects";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Spinner } from "./ui/spinner";
 
 export const CreateProjectDrawer = ({
   loadProjects,
@@ -46,11 +47,11 @@ export const CreateProjectDrawer = ({
         },
         icon: <CheckCircle className="w-5 h-5" />,
       });
-      reset();
       loadProjects();
     } catch (err: any) {
       setError("root", { message: err.message || "Failed to create project" });
     } finally {
+      reset();
       setIsSubmitting(false);
       setOpen(false);
     }
@@ -123,22 +124,30 @@ export const CreateProjectDrawer = ({
             {errors.root && (
               <p className="text-red-400">{errors.root.message}</p>
             )}
-          </form>
-          <DrawerFooter className="w-full">
-            <button
-              type="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
-              className="bg-white text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 cursor-pointer disabled:bg-white/70"
-            >
-              {isSubmitting ? "Creating..." : "Create Project"}
-            </button>
-            <DrawerClose asChild>
-              <button className="bg-white/20 text-white px-4 py-2 rounded-lg font-medium hover:bg-white/30 cursor-pointer">
-                Cancel
+            <DrawerFooter className="w-full p-0">
+              <button
+                type="submit"
+                onClick={handleSubmit(onSubmit)}
+                disabled={isSubmitting}
+                className="flex justify-center items-center gap-2 bg-white text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 cursor-pointer 
+                 disabled:bg-white/70"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Project"
+                )}
               </button>
-            </DrawerClose>
-          </DrawerFooter>
+              <DrawerClose asChild>
+                <button className="bg-white/20 text-white px-4 py-2 rounded-lg font-medium hover:bg-white/30 cursor-pointer mb-4">
+                  Cancel
+                </button>
+              </DrawerClose>
+            </DrawerFooter>
+          </form>
         </div>
       </DrawerContent>
     </Drawer>

@@ -63,7 +63,7 @@ export const Projects = () => {
           <button
             onClick={() => setPage((prev) => Math.max(0, prev - 1))}
             disabled={paginatedData.currentPage === 0}
-            className="bg-white text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 disabled:bg-white/50 cursor-pointer disabled:cursor-auto"
+            className="px-4 py-2 bg-white/20 text-white rounded-lg disabled:opacity-50 cursor-pointer"
           >
             Previous
           </button>
@@ -73,7 +73,7 @@ export const Projects = () => {
           <button
             onClick={() => setPage((prev) => prev + 1)}
             disabled={paginatedData.currentPage >= paginatedData.totalPages - 1}
-            className="bg-white text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 disabled:bg-white/50 cursor-pointer disabled:cursor-auto"
+            className="px-4 py-2 bg-white/20 text-white rounded-lg disabled:opacity-50 cursor-pointer"
           >
             Next
           </button>

@@ -5,11 +5,12 @@ import { Projects } from "./routes/projects";
 import { AuthProvider } from "./auth/authContext";
 import { ProtectedRoute } from "./auth/protectedRoute";
 import { Toaster } from "sonner";
+import { Tasks } from "./routes/tasks";
 
 export function App() {
   return (
     <AuthProvider>
-      <Toaster/>
+      <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -21,7 +22,14 @@ export function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/tasks" element={<button>tasks</button>} />
+        <Route
+          path="/projects/:id/tasks"
+          element={
+            <ProtectedRoute>
+              <Tasks />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </AuthProvider>
   );

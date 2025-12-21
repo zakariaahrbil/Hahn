@@ -53,3 +53,12 @@ export const createProject = async (
     throw err;
   }
 };
+
+export const getProjectById = async (id: number): Promise<projectType> => {
+  try {
+    const response = await api.get(`${PROJECTS_API}/${id}`);
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};

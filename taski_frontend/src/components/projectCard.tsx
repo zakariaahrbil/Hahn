@@ -15,7 +15,7 @@ export const ProjectCard = ({ id, title }: listProjectType) => {
         </div>
       </div>
       <Link
-        to={`/projects/${id}`}
+        to={`/projects/${id}/tasks`}
         className="justify-self-end bg-white flex gap-2 items-center text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 cursor-pointer w-fit"
       >
         <ArrowRight className="w-5 h-5" />
