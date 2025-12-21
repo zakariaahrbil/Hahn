@@ -50,6 +50,7 @@ export const Tasks = () => {
     try {
       const response = await getProjectById(projectId);
       setProject(response);
+      localStorage.setItem("LastProject", JSON.stringify(response));
     } catch (err) {
       router("/not-found", { replace: true });
     }
@@ -148,6 +149,12 @@ export const Tasks = () => {
                 Tasks for <br />
                 {project?.title || "Loading..."}
               </h1>
+              <p className="font-light">
+                Created:{" "}
+                <span className="font-medium">
+                  {new Date(project.createdAt).toLocaleDateString()}
+                </span>
+              </p>
             </div>
             <Link
               onClick={logout}
