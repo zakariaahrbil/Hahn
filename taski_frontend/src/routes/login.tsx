@@ -1,5 +1,6 @@
 import { useAuth } from "@/auth/authContext";
 import { GradientContainer } from "@/components/gradientContainer";
+import { Spinner } from "@/components/ui/spinner";
 import { EyeClosedIcon, EyeIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -43,9 +44,6 @@ export const Login = () => {
           className="flex flex-col gap-6 mt-10 w-full max-w-md bg-white/9 backdrop-blur-lg  text-white font-light px-8 py-10  rounded-2xl shadow-xl"
         >
           <div className="flex flex-col">
-            {errors.root && (
-              <p className="text-red-400 mt-1">{errors.root.message}</p>
-            )}
             <label className="font-medium mb-2">Email</label>
             <input
               {...register("email", {
@@ -57,7 +55,7 @@ export const Login = () => {
               })}
               placeholder="m@example.com"
               className={`px-4 py-2 rounded-lg focus:outline-none border  ${
-                errors.email
+                errors.email || errors.root
                   ? "border-red-400"
                   : "border-white/50 focus:border-white"
               } `}
@@ -92,7 +90,7 @@ export const Login = () => {
               type={show ? "text" : "password"}
               placeholder=""
               className={`px-4 py-2 rounded-lg focus:outline-none border  ${
-                errors.password
+                errors.password || errors.root
                   ? "border-red-400"
                   : "border-white/50 focus:border-white"
               } `}
@@ -100,13 +98,17 @@ export const Login = () => {
             {errors.password && (
               <p className="text-red-400 mt-1">{errors.password.message}</p>
             )}
+            {errors.root && (
+              <p className="text-red-400 mt-1">{errors.root.message}</p>
+            )}
           </div>
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-white text-purple-950 px-6 py-3 rounded-lg font-medium hover:bg-white/90 cursor-pointer"
+            className={`flex justify-center items-center gap-2 bg-white text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 cursor-pointer 
+                disabled:cursor-not-allowed disabled:bg-white/70`}
           >
-            {isLoading ? "Logging in..." : "Login"}
+            {isLoading ? <><Spinner className="size-4"/>Login</> : "Login"}
           </button>
         </form>
       </div>

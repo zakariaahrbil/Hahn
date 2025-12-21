@@ -1,3 +1,4 @@
+import { useAuth } from "@/auth/authContext";
 import { GradientContainer } from "@/components/gradientContainer";
 import { LastProject } from "@/components/lastProject";
 import { Search } from "@/components/search";
@@ -5,6 +6,7 @@ import { LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Projects = () => {
+    const {logout} = useAuth();
   return (
     <GradientContainer>
       <div className="max-w-300 flex flex-col w-full h-full mx-auto pt-8">
@@ -14,6 +16,7 @@ export const Projects = () => {
             space
           </h1>
           <Link
+            onClick={logout}
             to="/login"
             className="bg-white flex gap-2 items-center text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 cursor-pointer"
           >
