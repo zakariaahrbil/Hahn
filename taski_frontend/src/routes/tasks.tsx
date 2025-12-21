@@ -199,7 +199,6 @@ export const Tasks = () => {
             <div className="flex-1">
               <div className="flex flex-col md:flex-row flex-wrap md:items-center md:justify-between gap-4 w-full">
                 <TaskSearch
-                  searchQuery={searchQuery}
                   onSearchChange={handleSearchChange}
                 />
                 <div className="md:w-auto">
@@ -212,7 +211,7 @@ export const Tasks = () => {
                 </div>
               </div>
               <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 ">
-                {paginatedData.tasks.length === 0 ? (
+                {paginatedData.tasks.length === 0 && !searchQuery ? (
                   <div className="col-span-full text-center text-white py-12">
                     <FolderArchive className="w-24 h-24 mx-auto mb-4 text-white/70" />
                     <h2 className="text-2xl font-bold mb-2">No tasks yet</h2>

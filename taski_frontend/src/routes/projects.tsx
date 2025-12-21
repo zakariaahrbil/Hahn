@@ -122,7 +122,7 @@ export const Projects = () => {
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    setPage(0); // Reset to first page when search changes
+    setPage(0); 
   };
 
   useEffect(() => {
@@ -153,7 +153,6 @@ export const Projects = () => {
         </div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4 w-full">
           <ProjectSearch
-            searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
           />
           <SortControls
