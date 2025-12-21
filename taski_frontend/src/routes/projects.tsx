@@ -1,12 +1,29 @@
+import { getAllProjects, type projectList } from "@/api/projects";
 import { useAuth } from "@/auth/authContext";
 import { GradientContainer } from "@/components/gradientContainer";
 import { LastProject } from "@/components/lastProject";
 import { Search } from "@/components/search";
 import { LogOut } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export const Projects = () => {
-    const {logout} = useAuth();
+  const [page, setPage] = useState(0);
+  const { logout } = useAuth();
+  const [projects, setProjects] = useState<projectList>([]);
+  const loadProjects = async () => {
+    try {
+      const response = await getAllProjects(page);
+      setProjects(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    loadProjects();
+  }, [page]);
+
   return (
     <GradientContainer>
       <div className="max-w-300 flex flex-col w-full h-full mx-auto pt-8">
@@ -26,6 +43,16 @@ export const Projects = () => {
         </div>
         <LastProject />
         <Search />
+        <section className="flex gap-2 mt-6">
+          {projects.map((project) => (
+            <div
+              key={project.id}
+              className="bg-white/9 text-white p-6 rounded-lg shadow-xl flex-1"
+            >
+              <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+            </div>
+          ))}
+        </section>
       </div>
     </GradientContainer>
   );
