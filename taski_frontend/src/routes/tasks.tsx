@@ -147,7 +147,7 @@ export const Tasks = () => {
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    setPage(0); 
+    setPage(0);
   };
 
   useEffect(() => {
@@ -166,8 +166,8 @@ export const Tasks = () => {
     return (
       <GradientContainer>
         <div className="max-w-300 flex flex-col w-full h-full mx-auto pt-8 ">
-          <div className="flex justify-between gap-4 md:items-start items-center">
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col justify-between gap-4 md:items-start items-center">
+            <div className="flex gap-4 justify-between w-full">
               <Link
                 to="/projects"
                 className="flex items-center gap-2 text-white hover:text-white/80"
@@ -175,32 +175,43 @@ export const Tasks = () => {
                 <ArrowLeft className="w-5 h-5" />
                 Back to Projects
               </Link>
-              <h1 className=" md:text-3xl text-2xl  max-w-100 text-left font-normal  lg:leading-10">
-                Tasks for <br />
-                {project?.title || "Loading..."}
-              </h1>
-              <p className="font-light">
-                Created:{" "}
-                <span className="font-medium">
-                  {new Date(project.createdAt).toLocaleDateString()}
-                </span>
-              </p>
+              <Link
+                onClick={logout}
+                to="/login"
+                className="bg-white flex gap-2 items-center text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 cursor-pointer"
+              >
+                <LogOut className="h-5 w-5" />
+                Logout
+              </Link>
             </div>
-            <Link
-              onClick={logout}
-              to="/login"
-              className="bg-white flex gap-2 items-center text-purple-950 px-4 py-2 rounded-lg font-medium hover:bg-white/90 cursor-pointer"
-            >
-              <LogOut className="h-5 w-5" />
-              Logout
-            </Link>
+            <div className="flex gap-4 justify-between w-full">
+              <div>
+                <h1 className=" md:text-3xl text-2xl  max-w-100 text-left font-normal  lg:leading-10">
+                  Tasks for <br />
+                  {project?.title || "Loading..."}
+                </h1>
+                <p className="font-light">
+                  Created:{" "}
+                  <span className="font-medium">
+                    {new Date(project.createdAt).toLocaleDateString()}
+                  </span>
+                </p>
+              </div>
+
+              {project.description && (
+                <p className="text-sm max-w-xl text-justify">
+                  Description:{" "}
+                  {project.description.length > 150
+                    ? `${project.description.substring(0, 150)}...`
+                    : project.description}
+                </p>
+              )}
+            </div>
           </div>
           <div className="flex flex-col md:flex-row max-sm:flex-col-reverse md:gap-8 gap-2 mt-8">
             <div className="flex-1">
               <div className="flex flex-col md:flex-row flex-wrap md:items-center md:justify-between gap-4 w-full">
-                <TaskSearch
-                  onSearchChange={handleSearchChange}
-                />
+                <TaskSearch onSearchChange={handleSearchChange} />
                 <div className="md:w-auto">
                   <SortControls
                     sortBy={sortBy}

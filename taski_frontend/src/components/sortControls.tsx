@@ -14,12 +14,11 @@ interface SortControlsProps {
   sortOptions: SortOption[];
 }
 
-
 export const SortControls = ({
   sortBy,
   sortDirection,
   onSortChange,
-  sortOptions
+  sortOptions,
 }: SortControlsProps) => {
   return (
     <div className="flex items-center gap-2 w-fit">
@@ -28,7 +27,7 @@ export const SortControls = ({
         <select
           value={sortBy}
           onChange={(e) => onSortChange(e.target.value, sortDirection)}
-          className="bg-white/10 border border-white/50 text-white rounded-lg px-3 py-2 pr-8 focus:outline-none focus:border-white appearance-none cursor-pointer"
+          className="bg-white/10 border border-white/50 text-white rounded-lg px-3 py-2 pr-8 focus:outline-none focus:border-white hover:bg-white/20 active:bg-white/30 appearance-none cursor-pointer transition-colors"
         >
           {sortOptions.map((option) => (
             <option
