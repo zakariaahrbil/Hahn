@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
 interface UsePaginationOptions {
   initialSortBy?: string;
@@ -16,27 +16,27 @@ export const usePagination = (options: UsePaginationOptions = {}) => {
   );
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const handleSortChange = useCallback(
-    (newSortBy: string, newSortDirection: "asc" | "desc") => {
-      setSortBy(newSortBy);
-      setSortDirection(newSortDirection);
-      setPage(0);
-    },
-    []
-  );
+  function handleSortChange(
+    newSortBy: string,
+    newSortDirection: "asc" | "desc"
+  ) {
+    setSortBy(newSortBy);
+    setSortDirection(newSortDirection);
+    setPage(0);
+  }
 
-  const handleSearchChange = useCallback((query: string) => {
+  function handleSearchChange(query: string) {
     setSearchQuery(query);
     setPage(0);
-  }, []);
+  }
 
-  const nextPage = useCallback((totalPages: number) => {
+  function nextPage(totalPages: number) {
     setPage((p) => Math.min(totalPages - 1, p + 1));
-  }, []);
+  }
 
-  const prevPage = useCallback(() => {
+  function prevPage() {
     setPage((p) => Math.max(0, p - 1));
-  }, []);
+  }
 
   return {
     page,
