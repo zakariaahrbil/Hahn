@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, FolderArchive } from "lucide-react";
@@ -60,7 +60,7 @@ export const Tasks = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadTasks = useCallback(async () => {
+  async function loadTasks() {
     try {
       const response = await getAllTasks(
         projectId,
@@ -73,28 +73,26 @@ export const Tasks = () => {
     } catch {
       toast.error("Failed to load tasks");
     }
-  }, [projectId, page, sortBy, sortDirection, searchQuery]);
+  }
 
-  const loadProgress = useCallback(async () => {
+  async function loadProgress() {
     try {
       const data = await getProjectProgress(projectId);
       setProgress(data);
     } catch {
       setProgress({ progressPercentage: 0, totalTasks: 0, completedTasks: 0 });
       toast.error("Failed to load project progress");
-    } finally {
-      setIsLoading(false);
     }
-  }, [projectId,paginatedData.tasks]);
+  }
 
-  const refreshData = useCallback(() => {
+  function refreshData() {
     loadTasks();
     loadProgress();
-  }, [loadTasks, loadProgress]);
+  }
 
   const { execute } = useAsyncAction(refreshData);
 
-  const loadProject = useCallback(async () => {
+  async function loadProject() {
     try {
       const response = await getProjectById(projectId);
       setProject(response);
@@ -102,7 +100,7 @@ export const Tasks = () => {
     } catch {
       router("/not-found", { replace: true });
     }
-  }, [projectId, router]);
+  }
 
   const handleStatusChange = async (taskId: number) => {
     await execute(
@@ -121,18 +119,19 @@ export const Tasks = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    loadProgress();
-    loadProject();
-  }, [loadProgress, loadProject]);
+    const initializeData = async () => {
+      setIsLoading(true);
+      await Promise.all([loadProject(), loadProgress(), loadTasks()]);
+      setIsLoading(false);
+    };
+    initializeData();
+  }, [projectId]);
 
   useEffect(() => {
-    loadTasks();
-  }, [loadTasks]);
-
-  useEffect(() => {
-    loadProgress();
-  }, [loadProgress]);
+    if (!isLoading) {
+      loadTasks();
+    }
+  }, [page, sortBy, sortDirection, searchQuery]);
 
   if (isLoading) {
     return <Loading />;
@@ -224,7 +223,7 @@ export const Tasks = () => {
 
           <div className="md:w-80 space-y-4">
             <ProjectProgress progress={progress} />
-            <CreateTask loadTasks={loadTasks} projectId={projectId} />
+            <CreateTask refreshData={refreshData} projectId={projectId} />
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ import { ProjectSearch } from "@/components/project/projectSearch";
 import { SortControls } from "@/components/sortControls";
 import { useAsyncAction } from "@/hooks/useAsyncAction";
 import { usePagination } from "@/hooks/usePagination";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const PROJECT_SORT_OPTIONS = [
@@ -48,7 +48,7 @@ export const Projects = () => {
     projectTitle: "",
   });
 
-  const loadProjects = useCallback(async () => {
+  async function loadProjects() {
     try {
       const response = await getAllProjects(
         page,
@@ -60,7 +60,7 @@ export const Projects = () => {
     } catch {
       toast.error("Failed to load projects");
     }
-  }, [page, sortBy, sortDirection, searchQuery]);
+  }
 
   const { execute } = useAsyncAction(loadProjects);
 
@@ -85,7 +85,7 @@ export const Projects = () => {
 
   useEffect(() => {
     loadProjects();
-  }, [loadProjects]);
+  }, [page, sortBy, sortDirection, searchQuery]);
 
   return (
     <GradientContainer>

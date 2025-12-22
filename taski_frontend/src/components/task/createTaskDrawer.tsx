@@ -17,10 +17,10 @@ import { LayersPlusIcon } from "lucide-react";
 import { Spinner } from "../ui/spinner";
 
 export const CreateTaskDrawer = ({
-  loadTasks,
+  refreshData,
   projectId,
 }: {
-  loadTasks: () => Promise<void>;
+  refreshData: () => void;
   projectId: number;
 }) => {
   const [open, setOpen] = useState(false);
@@ -49,7 +49,7 @@ export const CreateTaskDrawer = ({
         },
         icon: <CheckCircle className="w-5 h-5" />,
       });
-      loadTasks();
+      refreshData();
     } catch (err: any) {
       toast.error("Failed to create task");
     } finally {
