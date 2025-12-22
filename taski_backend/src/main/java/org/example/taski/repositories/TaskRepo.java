@@ -37,6 +37,6 @@ public interface TaskRepo
             """, nativeQuery = true)
     Page<Task> findAllByProjectIdAndUserId(@Param("projectId") Long projectId, @Param("userId") Long userId, Pageable pageable);
 
-    @Query("SELECT t FROM Task t WHERE t.project.id = :projectId AND t.project.user.id = :userId AND (t.title LIKE %:query% OR t.description LIKE %:query%)")
+    @Query(value= "SELECT t FROM Task t WHERE t.project.id = :projectId AND t.project.user.id = :userId AND (LOWER(t.title) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(t.description) LIKE LOWER(CONCAT('%', :query, '%')))")
     Page<Task> searchByTitleOrDescriptionAndUserId(@Param("query") String query,@Param("projectId") Long projectId , @Param("userId") Long userId, Pageable pageable);
 }

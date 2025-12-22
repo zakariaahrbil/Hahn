@@ -18,7 +18,7 @@ public interface ProjectRepo
 {
     Optional<Project> findByIdAndUserId(Long projectId, Long userId);
     Page<Project> findAllByUserId(Long userId, Pageable pageable);
-    @Query("SELECT p FROM Project p WHERE p.user.id = :userId AND (p.title LIKE %:query% OR p.description LIKE %:query%)")
+    @Query("SELECT p FROM Project p WHERE p.user.id = :userId AND (LOWER(p.title) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(p.description) LIKE LOWER(CONCAT('%', :query, '%')))")
     Page<Project> searchByTitleOrDescriptionAndUserId(@Param("query") String query, @Param("userId") Long userId, Pageable pageable);
 
 
