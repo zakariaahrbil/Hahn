@@ -24,7 +24,6 @@ export const Login = () => {
   const router = useNavigate();
 
   useEffect(() => {
-    console.log(isAuthenticated);
     if (isAuthenticated) {
       router("/projects");
     }

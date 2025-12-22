@@ -19,7 +19,6 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use((response) => response, (error) => {
     if (error.response && error.response.status === 401) {
         localStorage.removeItem("token")
-        console.log("Unauthorized! Redirecting to login...")
     }
     return Promise.reject(error)
 })

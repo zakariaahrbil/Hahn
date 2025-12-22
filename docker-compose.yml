@@ -1,6 +1,3 @@
-version: "3.8"
-name: taski_stack
-
 services:
   taski_db:
     image: postgres:latest
@@ -19,6 +16,18 @@ services:
       - "8888:8080"
     restart: always
 
+  backend:
+    build: ./taski_backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://taski_db:5432/taski_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - taski_db
+    restart: always
+
   frontend:
     build: ./taski_frontend
     ports:
@@ -27,7 +36,9 @@ services:
       - ./taski_frontend:/app
       - /app/node_modules
     environment:
-      - REACT_APP_API_URL=http://host.docker.internal:8080
+      - VITE_API_URL=http://localhost:8080
+    depends_on:
+      - backend
 
 volumes:
   taski_db_data:
