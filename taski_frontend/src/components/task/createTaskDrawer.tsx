@@ -99,8 +99,8 @@ export const CreateTaskDrawer = ({
                   {...register("title", {
                     required: "Title is required",
                     maxLength: {
-                      value: 100,
-                      message: "Title must be less than 100 characters",
+                      value: 50,
+                      message: "Title must be less than 50 characters",
                     },
                   })}
                   placeholder="Task title"
@@ -120,8 +120,8 @@ export const CreateTaskDrawer = ({
                   {...register("description", {
                     required: "Description is required",
                     maxLength: {
-                      value: 500,
-                      message: "Description must be less than 500 characters",
+                      value: 200,
+                      message: "Description must be less than 200 characters",
                     },
                   })}
                   placeholder="Task description"

@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class CreateProjectRequest
 {
     @NotBlank(message = "Title is required")
-    @Size(max = 100, message = "Title must not exceed 100 characters")
+    @Size(max = 50, message = "Title must not exceed 50 characters")
     private String title;
-    @Size(max = 500, message = "Description must not exceed 500 characters")
+    @Size(max = 200, message = "Description must not exceed 200 characters")
     private String description;
 }
