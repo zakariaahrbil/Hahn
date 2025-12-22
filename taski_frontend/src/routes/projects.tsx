@@ -11,7 +11,6 @@ import { LastProject } from "@/components/project/lastProject";
 import { ProjectCard } from "@/components/project/projectCard";
 import { ProjectSearch } from "@/components/project/projectSearch";
 import { SortControls } from "@/components/sortControls";
-import { TotalProjects } from "@/components/project/totalProjects";
 import { LogOut, CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -146,15 +145,12 @@ export const Projects = () => {
             Logout
           </Link>
         </div>
-        <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
           <LastProject />
-          <TotalProjects />
           <CreateProject loadProjects={loadProjects} />
         </div>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-4 w-full">
-          <ProjectSearch
-            onSearchChange={handleSearchChange}
-          />
+          <ProjectSearch onSearchChange={handleSearchChange} />
           <SortControls
             sortBy={sortBy}
             sortDirection={sortDirection}
