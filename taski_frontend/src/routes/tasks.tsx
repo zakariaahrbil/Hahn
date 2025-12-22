@@ -132,7 +132,7 @@ export const Tasks = () => {
 
   useEffect(() => {
     loadProgress();
-  }, [loadProgress, paginatedData.tasks]);
+  }, [loadProgress]);
 
   if (isLoading) {
     return <Loading />;
