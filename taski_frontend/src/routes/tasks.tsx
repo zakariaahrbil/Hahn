@@ -85,7 +85,7 @@ export const Tasks = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [projectId]);
+  }, [projectId,paginatedData.tasks]);
 
   const refreshData = useCallback(() => {
     loadTasks();
