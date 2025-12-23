@@ -22,6 +22,14 @@ docker-compose up -d --build
 | Backend  | http://localhost:8080 |
 | Adminer  | http://localhost:8888 |
 
+## Default User Credentials
+
+You can log in with the following default user credentials (auto-created on first run):
+
+| Email           | Password |
+| --------------- | -------- |
+| admin@taski.com | admin123 |
+
 ## Run Locally
 
 **Backend:**
