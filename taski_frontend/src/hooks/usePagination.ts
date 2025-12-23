@@ -30,8 +30,8 @@ export const usePagination = (options: UsePaginationOptions = {}) => {
     setPage(0);
   }
 
-  function nextPage(totalPages: number) {
-    setPage((p) => Math.min(totalPages - 1, p + 1));
+  function nextPage() {
+    setPage((p) =>  p + 1);
   }
 
   function prevPage() {

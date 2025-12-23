@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && !user) {
       getMe();
     } else {
       setIsAuthLoading(false);

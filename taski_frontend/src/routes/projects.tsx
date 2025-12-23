@@ -50,6 +50,7 @@ export const Projects = () => {
 
   async function loadProjects() {
     try {
+      console.log(page)
       const response = await getAllProjects(
         page,
         sortBy,
@@ -127,7 +128,7 @@ export const Projects = () => {
           currentPage={paginatedData.currentPage}
           totalPages={paginatedData.totalPages}
           onPrevious={prevPage}
-          onNext={() => nextPage(paginatedData.totalPages)}
+          onNext={nextPage}
         />
       </div>
 

@@ -1,10 +1,10 @@
 import { useAuth } from "@/auth/authContext";
 import { GradientContainer } from "@/components/gradientContainer";
 import { Spinner } from "@/components/ui/spinner";
-import { EyeClosedIcon, EyeIcon } from "lucide-react";
+import { ArrowLeft, EyeClosedIcon, EyeIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type loginFormDataType = {
   email: string;
@@ -130,6 +130,13 @@ export const Login = () => {
             )}
           </button>
         </form>
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2  px-6 py-3 rounded-lg font-medium mt-4 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          Go Home
+        </Link>
       </div>
     </GradientContainer>
   );

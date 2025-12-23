@@ -14,7 +14,7 @@ export const TaskSearch = ({
 
   useEffect(() => {
     onSearchChange(debouncedQuery);
-  }, [debouncedQuery, onSearchChange]);
+  }, [debouncedQuery]);
 
   return (
     <div className="md:flex-1 w-full flex min-w-80 items-center border border-white/50 focus-within:border-white bg-white/10 text-white rounded-xl max-sm:mt-4 px-4 py-2 shadow-xl">

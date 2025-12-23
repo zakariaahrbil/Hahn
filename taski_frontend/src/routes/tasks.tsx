@@ -168,7 +168,6 @@ export const Tasks = () => {
             </div>
             {project.description && (
               <p className="text-sm max-w-xl text-justify">
-                Description:{" "}
                 {project.description.length > 150
                   ? `${project.description.substring(0, 150)}...`
                   : project.description}
@@ -216,7 +215,7 @@ export const Tasks = () => {
                 currentPage={paginatedData.currentPage}
                 totalPages={paginatedData.totalPages}
                 onPrevious={prevPage}
-                onNext={() => nextPage(paginatedData.totalPages)}
+                onNext={nextPage}
               />
             )}
           </div>

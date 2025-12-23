@@ -14,7 +14,7 @@ export const ProjectSearch = ({
 
   useEffect(() => {
     onSearchChange(debouncedQuery);
-  }, [debouncedQuery, onSearchChange]);
+  }, [debouncedQuery]);
 
   return (
     <div className="md:flex-1 w-full flex items-center border border-white/50 focus-within:border-white bg-white/10 text-white rounded-xl px-4 py-2 shadow-xl">
